@@ -1,0 +1,16 @@
+meta {
+  name: Get Divisions Lovol
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/api/v1/master/division-lovol
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

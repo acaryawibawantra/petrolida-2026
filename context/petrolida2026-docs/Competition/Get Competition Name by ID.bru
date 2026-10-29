@@ -1,0 +1,52 @@
+meta {
+  name: Get Competition Name by ID
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{host}}/api/v1/competition/names/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: 447c219b-81c4-48bf-bc76-d40bd1e75207
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+
+  request: {
+    url: {{host}}/api/v1/competition/names/447c219b-81c4-48bf-bc76-d40bd1e75207
+    method: GET
+    mode: none
+  }
+
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "status": "success",
+          "message": "success to get competition names",
+          "data": {
+            "id": "447c219b-81c4-48bf-bc76-d40bd1e75207",
+            "name": "Business Case Competition",
+            "max_member": 3
+          }
+        }
+      '''
+    }
+  }
+}

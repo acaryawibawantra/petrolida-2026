@@ -1,0 +1,62 @@
+meta {
+  name: Reject Team
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{host}}/api/v1/competition/status/rejected/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: {{team_id}}
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "reason": "student id card is unreadable"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: Success
+
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success reject competition team",
+          "data": {
+            "team_name": "Team Alpha",
+            "university": "Institut Teknologi Bandung",
+            "status": "rejected",
+            "stage": "registration",
+            "is_international": false,
+            "payment_proof": "",
+            "event_id": "7994e6d2-cc23-43f5-baed-3f6b81818c54",
+            "rejection_reason": "student id card is unreadable",
+            "participants": []
+          }
+        }
+      '''
+    }
+  }
+}

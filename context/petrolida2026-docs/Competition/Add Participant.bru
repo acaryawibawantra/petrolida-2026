@@ -1,0 +1,102 @@
+meta {
+  name: Add Participant
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{host}}/api/v1/competition/:id/participant
+  body: multipartForm
+  auth: bearer
+}
+
+params:path {
+  id: {{team_id}}
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  name: New Participant
+  major: Teknik Perminyakan
+  batch: 2021
+  email: newparticipant@example.com
+  phone_number: 081234567892
+  student_id_card: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  twibbon_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  story_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  follow_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  follow_linkedin: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  follow_tiktok: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  repost_competition_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+}
+
+vars:pre-request {
+  team_id: ad19a8b4-1271-423d-b831-fe4733392d1e
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: Sucess
+
+  request: {
+    url: {{host}}/api/v1/competition/:id/participant
+    method: POST
+    mode: multipartForm
+    params:path: {
+      id: {{team_id}}
+    }
+
+    body:multipart-form: {
+      name: New Participant
+      major: Teknik Perminyakan
+      batch: 2021
+      email: newparticipant@example.com
+      phone_number: 081234567892
+      student_id_card: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      twibbon_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      story_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      follow_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      follow_linkedin: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      follow_tiktok: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      repost_competition_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+    }
+  }
+
+  response: {
+    headers: {
+      access-control-allow-credentials: true
+      access-control-allow-headers: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+      access-control-allow-methods: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+      access-control-allow-origin: *
+      access-control-expose-headers: Content-Length
+      access-control-max-age: 86400
+      cache-control: no-cache
+      content-type: application/json; charset=utf-8
+      date: Sat, 07 Mar 2026 06:09:36 GMT
+      content-length: 102
+    }
+
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success add new participant",
+          "data": "ad19a8b4-1271-423d-b831-fe4733392d1e"
+        }
+      '''
+    }
+  }
+}

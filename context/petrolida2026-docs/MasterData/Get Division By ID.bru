@@ -1,0 +1,20 @@
+meta {
+  name: Get Division By ID
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/v1/master/division/{{division_id}}
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  division_id: 646d7915-5b4d-41cd-ae87-a2c2ca49a16c
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

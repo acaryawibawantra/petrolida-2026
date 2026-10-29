@@ -1,0 +1,113 @@
+meta {
+  name: Count Delegates
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/v1/petrovis/count
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+  
+  request: {
+    url: {{host}}/api/v1/petrovis/count
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      access-control-allow-credentials: true
+      access-control-allow-headers: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+      access-control-allow-methods: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+      access-control-allow-origin: *
+      access-control-expose-headers: Content-Length
+      access-control-max-age: 86400
+      cache-control: no-cache
+      content-type: application/json; charset=utf-8
+      date: Wed, 04 Feb 2026 15:07:19 GMT
+      content-length: 122
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success count petrovis delegates status",
+          "data": {
+            "total": 9,
+            "paid": 5,
+            "pending": 3,
+            "cancelled": 1
+          }
+        }
+      '''
+    }
+  }
+}
+
+docs {
+  ## Description
+  Count total Petrovis delegates aggregated by transaction payment status. Provides statistics on total delegates, paid delegates, pending registrations, and cancelled registrations.
+
+  ## Authentication
+  - Bearer token required
+  - Role: **Admin only**
+
+  ## Response Structure
+  ```json
+  {
+    "success": true,
+    "message": "success count petrovis delegates status",
+    "data": {
+      "total": 9,
+      "paid": 5,
+      "pending": 3,
+      "cancelled": 1
+    }
+  }
+  ```
+
+  ## Response Fields
+  | Field | Type | Description |
+  |-------|------|-------------|
+  | total | integer | Total number of delegates across all Petrovis registrations |
+  | paid | integer | Number of delegates from paid registrations |
+  | pending | integer | Number of delegates from pending/unpaid registrations |
+  | cancelled | integer | Number of delegates from cancelled registrations |
+
+  ## Error Responses
+  | Status | Message |
+  |--------|---------|
+  | 401 | Unauthorized (missing or invalid token) |
+  | 403 | Forbidden (not an admin) |
+  | 500 | Failed to count petrovis delegates status |
+
+  ## Business Logic Notes
+  - Counts ALL delegates across all registrations (not just registrations)
+  - A single registration with 3 delegates counts as 3 delegates
+  - Status is derived from the associated Tripay transaction status
+  - Categories are mutually exclusive (each delegate counted once)
+  - total = paid + pending + cancelled
+  - Useful for event planning and capacity management
+  - Does not include deleted/cancelled registrations in any count
+}

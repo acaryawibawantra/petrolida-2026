@@ -1,0 +1,68 @@
+meta {
+  name: Validate Referral Code
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/v1/referral-code/validate?code=PETROVIS2026&event_id=1e2d6522-8339-4a92-9bf4-7453ddaa7a29
+  body: none
+  auth: inherit
+}
+
+docs {
+  ## Description
+  Validates a referral code without consuming it. Returns pricing information and remaining usage count.
+
+  ## Authentication
+  - None (public endpoint)
+
+  ## Query Parameters
+  | Parameter | Type | Required | Description |
+  |-----------|------|----------|-------------|
+  | code | string | Yes | Referral code to validate |
+  | event_id | string | No | Event UUID (defaults to Petrovis event if omitted) |
+
+  ## Success Response (200)
+  ```json
+  {
+    "success": true,
+    "message": "success validate referral code",
+    "data": {
+      "is_valid": true,
+      "code": "PETROVIS2026",
+      "final_price": 180000,
+      "original_price": 250000,
+      "discount": 0,
+      "remaining_uses": 3,
+      "message": "Referral code is valid"
+    }
+  }
+  ```
+
+  ## Invalid Code Response (200 - still success, but is_valid: false)
+  ```json
+  {
+    "success": true,
+    "message": "success validate referral code",
+    "data": {
+      "is_valid": false,
+      "message": "Referral code not found"
+    }
+  }
+  ```
+
+  ## Error Responses
+  | Status | Message |
+  |--------|---------|
+  | 400 | code parameter is required |
+
+  ## Example Usage
+  ```
+  # Check if PETROVIS2026 is valid
+  GET /api/v1/referral-code/validate?code=PETROVIS2026
+
+  # Check for specific event
+  GET /api/v1/referral-code/validate?code=PETROVIS2026&event_id=1e2d6522-8339-4a92-9bf4-7453ddaa7a29
+  ```
+}

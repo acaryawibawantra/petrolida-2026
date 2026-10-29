@@ -1,0 +1,49 @@
+meta {
+  name: Get All Competition Names
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{host}}/api/v1/competition/names
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: Success
+
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success get all competition names",
+          "data": [
+            {
+              "id": "7994e6d2-cc23-43f5-baed-3f6b81818c54",
+              "name": "Paper Competition",
+              "max_member": 3
+            },
+            {
+              "id": "1234e6d2-cc23-43f5-baed-3f6b81818c54",
+              "name": "Poster Competition",
+              "max_member": 2
+            }
+          ]
+        }
+      '''
+    }
+  }
+}

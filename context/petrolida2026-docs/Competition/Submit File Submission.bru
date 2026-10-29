@@ -1,0 +1,54 @@
+meta {
+  name: Submit File Submission
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/v1/competition/submission
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  submission_1: @file(path/to/submission1.pdf) # Max 10MB
+  submission_2: @file(path/to/submission2.pdf) # Max 10MB
+  submission_3: @file(path/to/submission3.pdf) # Max 10MB
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+
+  request: {
+    url: undefined
+    method: post
+    mode: none
+  }
+
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "file submitted successfully",
+          "data": {
+            "submission_1": "{{host}}/api/v1/competition/assets/submission/ae4843f0-086b-4cb7-a1fa-62769f3d9664/1",
+            "submission_2": "",
+            "submission_3": ""
+          }
+        }
+      '''
+    }
+  }
+}

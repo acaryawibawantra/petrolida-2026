@@ -1,0 +1,28 @@
+meta {
+  name: Change Status - Accepted
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{host}}/api/v1/oprec-lovol/accepted/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: d3d29d70-1d25-11e4-9d0e-123b93f75cba
+}
+
+params:query {
+  accepted_division_id: 646d7915-5b4d-41cd-ae87-a2c2ca49a16c
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

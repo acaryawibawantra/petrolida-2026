@@ -1,0 +1,104 @@
+meta {
+  name: Resubmit Competition
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{host}}/api/v1/competition/resubmit/:team_id
+  body: multipartForm
+  auth: bearer
+}
+
+params:path {
+  team_id: {{team_id}}
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  team_name: Team Omega Fixed
+  university: Institut Teknologi Bandung
+  participants[0][id]: {{participant_id}}
+  participants[0][name]: John Doe Fixed
+  participants[0][major]: Teknik Perminyakan
+  participants[0][batch]: 2021
+  participants[0][phone_number]: 081234567890
+  participants[0][student_id_card]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+}
+
+vars:pre-request {
+  team_id: ad19a8b4-1271-423d-b831-fe4733392d1e
+  participant_id: ca6183b5-9510-4f19-9f8c-45c5fe6d13ef
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  Authenticated user endpoint to resubmit a competition team after it has been rejected by admin.
+
+  Frontend rule:
+  - if team status is rejected, submit to PUT /api/v1/competition/resubmit/:team_id
+  - if team status is incomplete, use PUT /api/v1/competition/:team_id instead
+
+  Notes:
+  - request format is multipart/form-data
+  - backend only allows this endpoint when the current team status is rejected
+  - after successful resubmit, rejection_reason is cleared and team status is set back to paid
+}
+
+example {
+  name: Success
+
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success resubmit competition",
+          "data": {
+            "team_name": "Team Omega Fixed",
+            "university": "Institut Teknologi Bandung",
+  "event": "Paper and Poster Competition Petrolida 2026",
+            "email": "leader@example.com",
+            "status": "paid",
+            "stage": "registration"
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Failed | Team Must Be Rejected
+
+  response: {
+    status: {
+      code: 400
+      text: Bad Request
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": false,
+          "message": "team status must be rejected",
+          "error": "team status must be rejected"
+        }
+      '''
+    }
+  }
+}

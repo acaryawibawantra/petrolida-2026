@@ -1,0 +1,16 @@
+meta {
+  name: Get All Products Name
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{host}}/api/v1/product/name
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

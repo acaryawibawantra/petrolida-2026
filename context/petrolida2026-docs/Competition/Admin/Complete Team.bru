@@ -1,0 +1,38 @@
+meta {
+  name: Complete Team
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{host}}/api/v1/competition/status/complete
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "Team finalized successfully",
+          "data": null
+        }
+      '''
+    }
+  }
+}

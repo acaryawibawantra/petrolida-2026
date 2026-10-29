@@ -1,0 +1,168 @@
+meta {
+  name: Get by ID
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/v1/petrovis/{{petrovis_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+vars:post-response {
+  petrovis_id: res.body.data.id
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+  
+  request: {
+    url: {{host}}/api/v1/petrovis/c58a8a69-56a9-4c35-8a5f-9e95eae8b7ee
+    method: GET
+    mode: none
+  }
+  
+  response: {
+    headers: {
+      access-control-allow-credentials: true
+      access-control-allow-headers: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+      access-control-allow-methods: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+      access-control-allow-origin: *
+      access-control-expose-headers: Content-Length
+      access-control-max-age: 86400
+      cache-control: no-cache
+      content-type: application/json; charset=utf-8
+      date: Wed, 04 Feb 2026 15:06:11 GMT
+      content-length: 891
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success to get detail Petrovis",
+          "data": {
+            "id": "c58a8a69-56a9-4c35-8a5f-9e95eae8b7ee",
+            "spe": "SPE UI SC",
+            "email": "adidin@gmail.com",
+            "status": "paid",
+            "delegates": [
+              {
+                "name": "Adidin bin ahmad",
+                "phone_number": "6285333133515",
+                "faculty": "FCC",
+                "major": "Sastra Jaringan",
+                "batch": "2024",
+                "gender": "Male",
+                "type": "LEADER",
+                "scan_id": "https://images.unsplash.com/photo-1422452098470-722310d3ad74?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              },
+              {
+                "name": "Ahmad bin adidin",
+                "phone_number": "6285333132515",
+                "faculty": "FCC",
+                "major": "Sastra Jaringan",
+                "batch": "2024",
+                "gender": "Male",
+                "type": "MEMBER",
+                "scan_id": "https://images.unsplash.com/photo-1422452098470-722310d3ad74?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              }
+            ]
+          }
+        }
+      '''
+    }
+  }
+}
+
+docs {
+  ## Description
+  Retrieve detailed Petrovis registration by ID, including all delegates and their information.
+
+  ## Authentication
+  - Bearer token required
+  - Role: **Admin only**
+
+  ## Path Parameters
+  | Parameter | Type | Required | Description |
+  |-----------|------|----------|-------------|
+  | id | string(uuid) | Yes | Petrovis registration UUID |
+
+  ## Response Structure
+  ```json
+  {
+    "success": true,
+    "message": "success to get detail Petrovis",
+    "data": {
+      "id": "c58a8a69-56a9-4c35-8a5f-9e95eae8b7ee",
+      "spe": "SPE UI SC",
+      "email": "adidin@gmail.com",
+      "status": "paid",
+      "delegates": [
+        {
+          "name": "Adidin bin ahmad",
+          "phone_number": "6285333133515",
+          "faculty": "FCC",
+          "major": "Sastra Jaringan",
+          "batch": "2024",
+          "gender": "Male",
+          "type": "LEADER",
+          "scan_id": "https://s3.amazonaws.com/..."
+        }
+      ]
+    }
+  }
+  ```
+
+  ## Response Fields
+  | Field | Type | Description |
+  |-------|------|-------------|
+  | id | string(uuid) | Unique identifier of the Petrovis registration |
+  | spe | string | Name of the SPE organization |
+  | email | string | Registration contact email |
+  | status | string | Payment status (paid, pending, cancelled) |
+  | delegates | array | Array of delegate objects (leader at index 0) |
+
+  ### Delegate Fields
+  | Field | Type | Description |
+  |-------|------|-------------|
+  | name | string | Full name of the delegate |
+  | phone_number | string | Phone number |
+  | faculty | string | Faculty name |
+  | major | string | Major/Study program |
+  | batch | string | Batch/year of study |
+  | gender | string | Gender (Male/Female) |
+  | type | string | Delegate type (LEADER or MEMBER) |
+  | scan_id | string(url) | S3 URL to uploaded ID card scan |
+
+  ## Error Responses
+  | Status | Message |
+  |--------|---------|
+  | 400 | Invalid ID parameter format |
+  | 401 | Unauthorized (missing or invalid token) |
+  | 403 | Forbidden (not an admin) |
+  | 404 | Petrovis ID not found |
+  | 500 | Failed to get detail Petrovis |
+
+  ## Business Logic Notes
+  - First delegate (index 0) is always the LEADER
+  - Subsequent delegates (if any) are MEMBER type
+  - scan_id field contains the full S3 URL to the uploaded file
+  - Validates existence of Petrovis registration, associated Tripay transaction, and SPE organization
+}

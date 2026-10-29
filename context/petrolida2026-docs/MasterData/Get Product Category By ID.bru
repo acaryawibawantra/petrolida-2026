@@ -1,0 +1,20 @@
+meta {
+  name: Get Product Category By ID
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{host}}/api/v1/master/product-category/{{category_id}}
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  category_id: c3d4e5f6-7a8b-9c0d-1e2f-3a4b5c6d7e8f
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

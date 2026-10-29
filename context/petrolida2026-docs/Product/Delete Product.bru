@@ -1,0 +1,24 @@
+meta {
+  name: Delete Product
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{host}}/api/v1/product/{{product_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+vars:pre-request {
+  product_id: d4e5f6a7-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

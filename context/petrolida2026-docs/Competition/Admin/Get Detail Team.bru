@@ -1,0 +1,74 @@
+meta {
+  name: Get Detail Team
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/v1/competition/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: {{team_id}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success get detail team",
+          "data": {
+            "team_name": "Team Alpha",
+            "university": "Institut Teknologi Bandung",
+            "status": "verified",
+            "stage": "preliminary",
+            "is_international": true,
+            "payment_proof": "{{host}}/api/v1/competition/assets/7994e6d2-cc23-43f5-baed-3f6b81818c54/payment_proof",
+            "event_id": "7994e6d2-cc23-43f5-baed-3f6b81818c54",
+            "rejection_reason": "",
+            "participants": [
+              {
+                "id": "p1a2b3c4-d5e6-7890-abcd-ef1234567890",
+                "name": "John Doe",
+                "major": "Teknik Perminyakan",
+                "batch": "2021",
+                "email": "john.doe@example.com",
+                "phone_number": "081234567890",
+                "student_id_card": "{{host}}/api/v1/competition/assets/p1a2b3c4-d5e6-7890-abcd-ef1234567890/student_id_card",
+                "twibbon_ig": "{{host}}/api/v1/competition/assets/p1a2b3c4-d5e6-7890-abcd-ef1234567890/twibbon_ig",
+                "story_ig": "{{host}}/api/v1/competition/assets/p1a2b3c4-d5e6-7890-abcd-ef1234567890/story_ig",
+                "follow_ig": "{{host}}/api/v1/competition/assets/p1a2b3c4-d5e6-7890-abcd-ef1234567890/follow_ig",
+                "follow_linkedin": "{{host}}/api/v1/competition/assets/p1a2b3c4-d5e6-7890-abcd-ef1234567890/follow_linkedin",
+                "follow_tiktok": "{{host}}/api/v1/competition/assets/p1a2b3c4-d5e6-7890-abcd-ef1234567890/follow_tiktok",
+                "repost_competition_ig": "{{host}}/api/v1/competition/assets/p1a2b3c4-d5e6-7890-abcd-ef1234567890/repost_competition_ig",
+                "type": "leader"
+              }
+            ],
+            "submission": {
+              "submission_1": "{{host}}/api/v1/competition/assets/submission/ae4843f0-086b-4cb7-a1fa-62769f3d9664/1",
+              "submission_2": "",
+              "submission_3": ""
+            }
+          }
+        }
+      '''
+    }
+  }
+}

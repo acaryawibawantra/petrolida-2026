@@ -1,0 +1,77 @@
+meta {
+  name: Get All Competition Team
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/v1/competition?page=1&limit=10&search=&status=&stage=
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  limit: 10
+  search:
+  status:
+  stage:
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success get all competition team",
+          "data": [
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+              "event_id": "7994e6d2-cc23-43f5-baed-3f6b81818c54",
+              "event_name": "Paper Competition",
+              "team_name": "Team Alpha",
+              "leader_name": "John Doe",
+              "university": "Institut Teknologi Bandung",
+              "status": "verified",
+              "stage": "preliminary",
+              "sale_type": "normal",
+              "rejection_reason": ""
+            },
+            {
+              "id": "b2c3d4e5-f6g7-8901-bcde-f12345678901",
+              "event_id": "7994e6d2-cc23-43f5-baed-3f6b81818c54",
+              "event_name": "Poster Competition",
+              "team_name": "Team Beta",
+              "leader_name": "Jane Smith",
+              "university": "Universitas Indonesia",
+              "status": "rejected",
+              "stage": "registration",
+              "sale_type": "early_bird",
+              "rejection_reason": "student id card is unreadable"
+            }
+          ],
+          "meta": {
+            "page": 1,
+            "limit": 10,
+            "total": 25,
+            "total_page": 3
+          }
+        }
+      '''
+    }
+  }
+}

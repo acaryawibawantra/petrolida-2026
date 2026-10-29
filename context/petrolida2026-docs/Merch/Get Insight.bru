@@ -1,0 +1,20 @@
+meta {
+  name: Get Insight
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{host}}/api/v1/merch/insight
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

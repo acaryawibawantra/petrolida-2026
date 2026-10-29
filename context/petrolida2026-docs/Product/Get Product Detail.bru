@@ -1,0 +1,20 @@
+meta {
+  name: Get Product Detail
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/v1/product/{{product_id}}
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  product_id: 9f64034c-f9b8-43c0-a1fc-76d823a3ec8b
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

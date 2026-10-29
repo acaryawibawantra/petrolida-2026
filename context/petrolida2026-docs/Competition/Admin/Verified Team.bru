@@ -1,0 +1,42 @@
+meta {
+  name: Verified Team
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{host}}/api/v1/competition/status/verified/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: {{team_id}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "Team verified successfully",
+          "data": null
+        }
+      '''
+    }
+  }
+}

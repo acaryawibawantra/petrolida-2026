@@ -1,0 +1,190 @@
+meta {
+  name: Edit Participant
+  type: http
+  seq: 10
+}
+
+patch {
+  url: {{host}}/api/v1/competition/participant/:participant_id
+  body: multipartForm
+  auth: bearer
+}
+
+params:path {
+  participant_id: {{participant_id}}
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  name: John Doe Updated
+  phone_number: 081234567899
+  follow_linkedin: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+}
+
+vars:pre-request {
+  participant_id: ca6183b5-9510-4f19-9f8c-45c5fe6d13ef
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  Authenticated user endpoint to partially update one existing competition participant.
+
+  Request notes:
+  - Method: PATCH
+  - URL: /api/v1/competition/participant/:participant_id
+  - Content-Type: multipart/form-data
+  - Path param :participant_id is the participant UUID to edit
+  - This is a partial update endpoint, so frontend only needs to send fields or files that actually change
+
+  Allowed team status:
+  - incomplete
+  - rejected
+
+  Editable text fields:
+  - name
+  - major
+  - batch
+  - email
+  - phone_number
+
+  Editable file fields:
+  - student_id_card
+  - twibbon_ig
+  - story_ig
+  - follow_ig
+  - follow_linkedin
+  - follow_tiktok
+  - repost_competition_ig
+
+  Validation rules currently enforced by backend:
+  - phone_number must contain digits only
+  - phone_number length must be 8 to 20 digits
+  - phone_number must not contain +, spaces, or -
+  - email must be a valid email format when provided
+  - uploaded proof files must be jpg, jpeg, or png
+  - each uploaded proof file must not exceed 10MB
+  - participant must belong to the authenticated user's team
+  - edit is rejected when team status is not incomplete or rejected
+
+  Frontend integration notes:
+  - use this endpoint for editing a single participant instead of re-sending the whole team payload
+  - if success=false, show response.message first
+  - if response.message is empty, fallback to response.error
+  - use a generic fallback only for network errors, timeouts, or unparseable response bodies
+}
+
+example {
+  name: Success | Partial Update
+
+  request: {
+    url: {{host}}/api/v1/competition/participant/:participant_id
+    method: PATCH
+    mode: multipartForm
+    params:path: {
+      participant_id: {{participant_id}}
+    }
+
+    body:multipart-form: {
+      name: John Doe Updated
+      phone_number: 081234567899
+      follow_linkedin: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+    }
+  }
+
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success update competition participant",
+          "data": {
+            "id": "ca6183b5-9510-4f19-9f8c-45c5fe6d13ef",
+            "name": "John Doe Updated",
+            "major": "Teknik Perminyakan",
+            "batch": "2021",
+            "email": "johndoe@example.com",
+            "phone_number": "081234567899",
+            "student_id_card": "https://api.petrolida.com/api/v1/competition/assets/ca6183b5-9510-4f19-9f8c-45c5fe6d13ef/student_id_card",
+            "twibbon_ig": "https://api.petrolida.com/api/v1/competition/assets/ca6183b5-9510-4f19-9f8c-45c5fe6d13ef/twibbon_ig",
+            "story_ig": "https://api.petrolida.com/api/v1/competition/assets/ca6183b5-9510-4f19-9f8c-45c5fe6d13ef/story_ig",
+            "follow_ig": "https://api.petrolida.com/api/v1/competition/assets/ca6183b5-9510-4f19-9f8c-45c5fe6d13ef/follow_ig",
+            "follow_linkedin": "https://api.petrolida.com/api/v1/competition/assets/ca6183b5-9510-4f19-9f8c-45c5fe6d13ef/follow_linkedin",
+            "follow_tiktok": "https://api.petrolida.com/api/v1/competition/assets/ca6183b5-9510-4f19-9f8c-45c5fe6d13ef/follow_tiktok",
+            "repost_competition_ig": "https://api.petrolida.com/api/v1/competition/assets/ca6183b5-9510-4f19-9f8c-45c5fe6d13ef/repost_competition_ig",
+            "type": "MEMBER"
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Failed | Invalid Phone Number
+
+  request: {
+    url: {{host}}/api/v1/competition/participant/:participant_id
+    method: PATCH
+    mode: multipartForm
+    params:path: {
+      participant_id: {{participant_id}}
+    }
+
+    body:multipart-form: {
+      phone_number: 0812-345-678
+    }
+  }
+
+  response: {
+    status: {
+      code: 400
+      text: Bad Request
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": false,
+          "message": "phone_number format is invalid",
+          "error": "phone_number format is invalid"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Failed | Stage Not Allowed
+
+  response: {
+    status: {
+      code: 400
+      text: Bad Request
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": false,
+          "message": "cannot edit participant at this stage",
+          "error": "cannot edit participant at this stage"
+        }
+      '''
+    }
+  }
+}

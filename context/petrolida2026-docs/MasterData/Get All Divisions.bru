@@ -1,0 +1,16 @@
+meta {
+  name: Get All Divisions
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/api/v1/master/division
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

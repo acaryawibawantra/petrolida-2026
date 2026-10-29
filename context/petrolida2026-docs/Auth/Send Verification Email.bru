@@ -1,0 +1,22 @@
+meta {
+  name: Send Verification Email
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/api/v1/user/send-email
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "johndoe@example.com"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

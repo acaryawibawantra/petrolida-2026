@@ -1,0 +1,20 @@
+meta {
+  name: Get Assets
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/v1/oprec-lovol/assets/0db0d808-c9fd-4f5f-9a23-3a68a29df5ea/storyFile
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

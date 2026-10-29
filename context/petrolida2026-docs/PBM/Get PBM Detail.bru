@@ -1,0 +1,28 @@
+meta {
+  name: Get PBM Detail
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/v1/pbm/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: 
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+vars:pre-request {
+  id: a9e29cab-c404-4588-bf41-0779ac3857fd
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

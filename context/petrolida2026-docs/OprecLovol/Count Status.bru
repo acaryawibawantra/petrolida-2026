@@ -1,0 +1,20 @@
+meta {
+  name: Count Status
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/api/v1/oprec-lovol/count
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

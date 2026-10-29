@@ -1,0 +1,20 @@
+meta {
+  name: anu
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{host}}/api/v1/transactions/c/{{CODE}}
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  CODE: HYJKXRPWPK
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

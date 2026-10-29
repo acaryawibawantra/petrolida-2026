@@ -1,0 +1,28 @@
+meta {
+  name: Create Product Asset
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/api/v1/product/{{product_id}}/asset
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  asset: @file(C:\Users\user\Downloads\product-image.jpg)
+}
+
+vars:pre-request {
+  product_id: d4e5f6a7-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

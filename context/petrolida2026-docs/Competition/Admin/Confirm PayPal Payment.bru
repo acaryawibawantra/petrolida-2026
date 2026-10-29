@@ -1,0 +1,19 @@
+meta {
+  name: Confirm PayPal Payment
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{host}}/api/v1/competition/status/paid/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id:
+}
+
+docs {
+  Marks an international team as PAID after manual verification of PayPal proof.
+}

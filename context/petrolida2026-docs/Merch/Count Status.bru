@@ -1,0 +1,20 @@
+meta {
+  name: Count Status
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/api/v1/merch/status/count
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

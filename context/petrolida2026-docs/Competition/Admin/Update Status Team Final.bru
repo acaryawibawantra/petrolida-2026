@@ -1,0 +1,52 @@
+meta {
+  name: Update Status Team Final
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/api/v1/competition/status/final/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: {{team_id}}
+}
+
+body:json {
+  {
+    "accom_price": 500000,
+    "non_accom_price": 300000,
+    "payment_method": "BRIVA"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success update status",
+          "data": {
+            "invoice_url": "https://tripay.co.id/checkout/T9876543210FEDCBA"
+          }
+        }
+      '''
+    }
+  }
+}

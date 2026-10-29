@@ -1,0 +1,16 @@
+meta {
+  name: Get All PBM Batches
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{host}}/api/v1/master/pbm-batch
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

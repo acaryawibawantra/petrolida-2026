@@ -1,0 +1,42 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/v1/oprec-lovol
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  name: Sahroni
+  email: saroni@gmail.com
+  major: e4a2c1d3-4e8f-4b1a-9c7d-8e6f1a9b2c0d
+  batch: 2024
+  student_id: 5020341190
+  practical_work: Web Development
+  phone_number: 62819230483
+  line_id: sahroni
+  information_from: instagram
+  about_petrolida: saroni saroni saroni
+  primary_division: 646d7915-5b4d-41cd-ae87-a2c2ca49a16c
+  primary_motivation: buting awiowakocontri
+  secondary_division: f2afeb97-abcd-465e-894c-8b85827fb487
+  secondary_motivation: second chhoice aja bang
+  english_proficiency: 5
+  communication_skill: 5
+  fast_response: 5
+  time_management: 5
+  willing_to_pay: true
+  transfer_to_other_division: true
+  cv_asset: @file(C:\Users\Rani\Downloads\Cheat_Sheet_For_Programming.pdf)
+  twibbon_story_asset: @file(C:\Users\Rani\OneDrive\Pictures\Cosmos dog pc wallpaper.jpeg)
+  follow_proof_asset: @file(C:\Users\Rani\OneDrive\Pictures\download (1).jpeg)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,16 @@
+meta {
+  name: Get All Faculties
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{host}}/api/v1/master/faculty
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

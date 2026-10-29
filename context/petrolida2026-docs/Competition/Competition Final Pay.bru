@@ -1,0 +1,49 @@
+meta {
+  name: Competition Final Pay
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/v1/competition/status/final/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: <competition_team_id>
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "accom_price": 500000,
+    "non_accom_price": 200000,
+    "payment_method": "BRIVA"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: Success
+
+  request: {
+    url: {{host}}/api/v1/competition/status/final/:id
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "accom_price": 500000,
+        "non_accom_price": 200000,
+        "payment_method": "BRIVA"
+      }
+    }
+  }
+}

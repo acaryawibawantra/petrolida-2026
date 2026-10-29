@@ -1,0 +1,19 @@
+meta {
+  name: Get Competition Price by ID
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{host}}/api/v1/competition/price/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 447c219b-81c4-48bf-bc76-d40bd1e75207
+}
+
+docs {
+  Public endpoint to check the current registration price for an event, accounting for tiered pricing, Flash Sales, and including International price calculation details.
+}

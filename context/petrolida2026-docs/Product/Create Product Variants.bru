@@ -1,0 +1,32 @@
+meta {
+  name: Create Product Variants
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/api/v1/product/{{product_id}}/variants
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Merah",
+    "price_adjustment": 0,
+    "stock": 50
+  }
+}
+
+vars:pre-request {
+  product_id: d4e5f6a7-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

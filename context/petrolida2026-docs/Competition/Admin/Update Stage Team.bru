@@ -1,0 +1,53 @@
+meta {
+  name: Update Stage Team
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{host}}/api/v1/competition/status/stage/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: {{team_id}}
+}
+
+body:json {
+  {
+    "stage": "semifinal"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: success
+
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "Team update stage successfully",
+          "data": null
+        }
+      '''
+    }
+  }
+}
+
+docs {
+  Progresses a team to the next stage.
+  Note: Team must be in `paid` or `verified` status.
+}

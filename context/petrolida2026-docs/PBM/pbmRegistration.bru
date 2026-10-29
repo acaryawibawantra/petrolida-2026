@@ -1,0 +1,26 @@
+meta {
+  name: PBM Register
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/v1/pbm/
+  body: multipartForm
+  auth: bearer
+}
+
+body:multipart-form {
+  name: petrolida
+  phone_number: 6285555333
+  institution: ITS
+  email: petrolid@gmail.com
+  follow_instagram: @file(C:\Users\HP Z420\Downloads\flow-deployment (2).png)
+  follow_tiktok: @file(C:\Users\HP Z420\Downloads\flow-deployment (2).png)
+  batch_id: f744e251-71b1-4fad-90fd-0b96c2d2c187
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,79 @@
+meta {
+  name: Check Validity
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/api/v1/voucher-code/check?code=VOUCHER123
+  body: none
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: Valid Voucher
+  
+  request: {
+    url: {{host}}/api/v1/voucher-code/check?code=VOUCHER123
+    method: GET
+  }
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "successfully checked voucher code",
+          "data": {
+            "valid": true,
+            "code": "VOUCHER123",
+            "type": "fixed_amount",
+            "amount": 225000,
+            "message": "voucher code is valid"
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Invalid Voucher
+  
+  request: {
+    url: {{host}}/api/v1/voucher-code/check?code=INVALID
+    method: GET
+  }
+  
+  response: {
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "successfully checked voucher code",
+          "data": {
+            "valid": false,
+            "code": "INVALID",
+            "message": "voucher code not found"
+          }
+        }
+      '''
+    }
+  }
+}

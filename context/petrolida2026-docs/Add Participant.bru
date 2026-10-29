@@ -1,0 +1,230 @@
+meta {
+  name: Add Participant
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{host}}/api/v1/competition/:id/participant
+  body: multipartForm
+  auth: bearer
+}
+
+params:path {
+  id: {{team_id}}
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  name: New Participant
+  major: Teknik Perminyakan
+  batch: 2021
+  email: newparticipant@example.com
+  phone_number: 081234567892
+  student_id_card: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  twibbon_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  story_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  follow_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  follow_linkedin: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  follow_tiktok: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  repost_competition_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+}
+
+vars:pre-request {
+  team_id: ad19a8b4-1271-423d-b831-fe4733392d1e
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  Authenticated user endpoint to add one new participant into an existing competition team.
+
+  Frontend and request notes:
+  - Method: POST
+  - URL: /api/v1/competition/:id/participant
+  - Content-Type: multipart/form-data
+  - Path param :id is competition_team_id
+  - This endpoint adds exactly one participant per request
+
+  Required form fields:
+  - name
+  - major
+  - batch
+  - email
+  - phone_number
+  - student_id_card
+  - twibbon_ig
+  - story_ig
+  - follow_ig
+  - follow_linkedin
+  - follow_tiktok
+  - repost_competition_ig
+
+  Validation rules currently enforced by backend:
+  - phone_number must contain digits only
+  - phone_number length must be 8 to 20 digits
+  - phone_number must not contain +, spaces, or -
+  - image proof files must be jpg, jpeg, or png
+  - each uploaded proof file must not exceed 10MB
+  - participant count must not exceed event max_member
+
+  Important backend behavior note:
+  - backend currently does not enforce team status must be incomplete for this endpoint
+  - current active guards are max_member limit and field/file validation
+  - if business rule should be restricted to incomplete only, that requires a separate backend change
+
+  Frontend error handling:
+  - if success=false, show response.message first
+  - if response.message is empty, fallback to response.error
+  - use a generic fallback only for network errors, timeouts, or unparseable response bodies
+}
+
+example {
+  name: Success
+
+  request: {
+    url: {{host}}/api/v1/competition/:id/participant
+    method: POST
+    mode: multipartForm
+    params:path: {
+      id: {{team_id}}
+    }
+
+    body:multipart-form: {
+      name: New Participant
+      major: Teknik Perminyakan
+      batch: 2021
+      email: newparticipant@example.com
+      phone_number: 081234567892
+      student_id_card: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      twibbon_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      story_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      follow_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      follow_linkedin: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      follow_tiktok: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      repost_competition_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+    }
+  }
+
+  response: {
+    headers: {
+      access-control-allow-credentials: true
+      access-control-allow-headers: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+      access-control-allow-methods: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+      access-control-allow-origin: *
+      access-control-expose-headers: Content-Length
+      access-control-max-age: 86400
+      cache-control: no-cache
+      content-type: application/json; charset=utf-8
+      date: Sat, 07 Mar 2026 06:09:36 GMT
+      content-length: 102
+    }
+
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success add new participant",
+          "data": "ad19a8b4-1271-423d-b831-fe4733392d1e"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Failed | Max Member Exceeded
+
+  request: {
+    url: {{host}}/api/v1/competition/:id/participant
+    method: POST
+    mode: multipartForm
+    params:path: {
+      id: {{team_id}}
+    }
+
+    body:multipart-form: {
+      name: Overflow Member
+      major: Teknik Perminyakan
+      batch: 2021
+      email: overflow@example.com
+      phone_number: 081234567893
+      student_id_card: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      twibbon_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      story_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      follow_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      follow_linkedin: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      follow_tiktok: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      repost_competition_ig: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+    }
+  }
+
+  response: {
+    status: {
+      code: 400
+      text: Bad Request
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": false,
+          "message": "competition excedeed limit 2",
+          "error": "competition excedeed limit 2"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Failed | Validation
+
+  request: {
+    url: {{host}}/api/v1/competition/:id/participant
+    method: POST
+    mode: multipartForm
+    params:path: {
+      id: {{team_id}}
+    }
+
+    body:multipart-form: {
+      name: Invalid Participant
+      major: Teknik Perminyakan
+      batch: 2021
+      email: invalid@example.com
+      phone_number: 0812-345-678
+    }
+  }
+
+  response: {
+    status: {
+      code: 400
+      text: Bad Request
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": false,
+          "message": "student_id_card is required",
+          "error": "student_id_card is required"
+        }
+      '''
+    }
+  }
+}

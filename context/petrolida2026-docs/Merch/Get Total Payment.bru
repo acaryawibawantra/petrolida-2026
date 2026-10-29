@@ -1,0 +1,20 @@
+meta {
+  name: Get Total Payment
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{host}}/api/v1/merch/payment/total
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

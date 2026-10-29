@@ -1,0 +1,16 @@
+meta {
+  name: Get All Petrovis SPE
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{host}}/api/v1/master/petrovis-spe
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

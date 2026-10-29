@@ -1,0 +1,226 @@
+meta {
+  name: Register
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}/api/v1/petrovis
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  spe_id: c58a8a69-56a9-4c35-8a5f-9e95eae8b7ee
+  email: example@email.com
+  total_delegates: 2
+  payment_method: QRIS
+  voucher_code: PETROVIS2026
+  delegates[0][name]: John Doe
+  delegates[0][student_id]: 12345678
+  delegates[0][phone_number]: 628123456789
+  delegates[0][faculty]: Engineering
+  delegates[0][major]: Petroleum Engineering
+  delegates[0][batch]: 2023
+  delegates[0][gender]: Male
+  delegates[0][institution]: Universitas Indonesia
+  delegates[0][department]: Faculty of Engineering
+  delegates[0][motivation]: Want to learn more
+  delegates[0][participated_before]: false
+  delegates[0][heard_from]: Instagram
+  delegates[0][scan_id]: @file(/path/to/scan/id.pdf)
+  delegates[1][name]: Jane Doe
+  delegates[1][student_id]: 87654321
+  delegates[1][phone_number]: 628987654321
+  delegates[1][faculty]: Engineering
+  delegates[1][major]: Petroleum Engineering
+  delegates[1][batch]: 2023
+  delegates[1][gender]: Female
+  delegates[1][institution]: Universitas Indonesia
+  delegates[1][department]: Faculty of Engineering
+  delegates[1][motivation]: Join my friend
+  delegates[1][participated_before]: true
+  delegates[1][heard_from]: Friends
+  delegates[1][scan_id]: @file(/path/to/scan/id2.pdf)
+}
+
+vars:post-response {
+  petrovis_id: res.body.data.id
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  ## Description
+  Public endpoint for registering Petrovis (SPE) event delegates with 1-3 delegates per registration. Creates a Tripay payment transaction and returns the payment URL for completion. Supports optional voucher codes for discounted internal pricing.
+
+  ## Authentication
+  - None (public endpoint)
+
+  ## Request Parameters (multipart/form-data)
+  | Parameter | Type | Required | Description |
+  |-----------|------|----------|-------------|
+  | spe_id | string(uuid) | No | UUID of the SPE (Student Petroleum Engineering) organization |
+  | email | string(email) | Yes | Contact email for the registration |
+  | total_delegates | integer | Yes | Total number of delegates (1-3) |
+  | payment_method | string | Yes | **Must be "QRIS" only** - other payment methods are rejected |
+  | voucher_code | string | No | Optional voucher code for discounted pricing (for example `PETROVIS2026`) |
+  | delegates[] | array | Yes | Array of delegate objects (max 3) |
+
+  ### Delegate Fields
+  | Field | Type | Required | Description |
+  |-------|------|----------|-------------|
+  | delegates[x][name] | string | Yes | Full name of the delegate |
+  | delegates[x][student_id] | string | Yes | Student ID number |
+  | delegates[x][phone_number] | string | Yes | Phone number (format: 62...) |
+  | delegates[x][faculty] | string | Yes | Faculty name |
+  | delegates[x][major] | string | Yes | Major/Study program |
+  | delegates[x][batch] | string | Yes | Batch/year of study |
+  | delegates[x][gender] | string | Yes | Gender (Male/Female) |
+  | delegates[x][institution] | string | Yes | Institution/Organization name |
+  | delegates[x][department] | string | Yes | Department name |
+  | delegates[x][motivation] | string | Yes | Motivation for joining |
+  | delegates[x][participated_before] | boolean | Yes | Have participated before? |
+  | delegates[x][heard_from] | string | Yes | Where did you hear about this? |
+  | delegates[x][scan_id] | file | Yes | ID card scan image (JPG/PNG/PDF) |
+
+  ## Pricing
+  | Type | Price per Delegate |
+  |------|-------------------|
+  | Public (no voucher code) | Rp 250,000 |
+  | Internal (with valid voucher code) | Rp 180,000 |
+
+  **Example**: 2 delegates with voucher code = 180,000 x 2 = Rp 360,000
+
+  ## Voucher Code Behavior
+  - If provided and valid: Applies discounted pricing
+  - If invalid/expired/exhausted: Returns error with details
+  - If omitted: Uses standard public pricing
+  - Code usage is incremented atomically to prevent race conditions
+
+  ## Response Structure
+  ```json
+  {
+    "success": true,
+    "message": "success to register Petrovis",
+    "data": {
+      "invoice_url": "https://payment.tripay.co/..."
+    }
+  }
+  ```
+
+  ## Error Responses
+
+  ### Invalid Payment Method (400)
+  ```json
+  {
+    "success": false,
+    "message": "failed to register Petrovis",
+    "error": "only QRIS payment method is allowed for Petrovis registration"
+  }
+  ```
+
+  ### Invalid Voucher Code (404)
+  ```json
+  {
+    "success": false,
+    "message": "failed to register Petrovis",
+    "error": "failed to get voucher code"
+  }
+  ```
+
+  ### Exhausted Voucher Code (400)
+  ```json
+  {
+    "success": false,
+    "message": "failed to register Petrovis",
+    "error": "voucher code usage limit reached"
+  }
+  ```
+
+  ### Inactive Voucher Code (400)
+  ```json
+  {
+    "success": false,
+    "message": "failed to register Petrovis",
+    "error": "voucher code is not active"
+  }
+  ```
+
+  ### Duplicate Data (409)
+  ```json
+  {
+    "success": false,
+    "message": "failed to register Petrovis",
+    "error": "email is already registered for Petrovis"
+  }
+  ```
+
+  ### Other Errors
+  | Status | Message |
+  |--------|---------|
+  | 400 | Invalid request body (validation errors on fields) |
+  | 400 | total_delegates does not match with the number of delegates |
+  | 400 | voucher code is not valid for Petrovis |
+  | 404 | SPE not found (if spe_id provided) |
+  | 500 | Failed to register Petrovis |
+
+  ## Business Logic Notes
+  - **Payment Method Restriction**: Only QRIS payment method is allowed
+  - **Pricing**:
+    - Public price: Rp 250,000 per delegate
+    - Internal price: Rp 180,000 per delegate (with valid voucher code)
+  - **Voucher Code Validation**:
+    - Code must be active and within date range
+    - Code must match the Petrovis voucher pricing setup
+    - Usage count must be below usage limit
+    - Usage is incremented atomically within the transaction
+  - First delegate in the array is automatically marked as **LEADER** type
+  - Subsequent delegates are marked as **MEMBER** type
+  - All scan_id files are uploaded concurrently to AWS S3 path: `event/petrovis/`
+  - Tripay transaction is created with order ID format: `EVENT-{uuid}`
+  - Payment invoice expires after 24 hours (86400 seconds)
+  - Welcome email is sent to the leader (first delegate's email or registration email)
+  - SPE must exist and be validated if spe_id is provided
+  - total_delegates must match the actual number of delegate objects provided
+  - **Transaction Safety**: Full rollback on any validation error (voucher code, payment, file upload)
+
+  ## Example Request without Voucher Code (Public Price)
+  ```
+  POST /api/v1/petrovis
+  Content-Type: multipart/form-data
+
+  spe_id: c58a8a69-56a9-4c35-8a5f-9e95eae8b7ee
+  email: user@example.com
+  total_delegates: 1
+  payment_method: QRIS
+  delegates[0][name]: John Doe
+  delegates[0][student_id]: 12345678
+  ... (other delegate fields)
+
+  Result: Price = Rp 250,000 (public price)
+  ```
+
+  ## Example Request with Voucher Code (Internal Price)
+  ```
+  POST /api/v1/petrovis
+  Content-Type: multipart/form-data
+
+  spe_id: c58a8a69-56a9-4c35-8a5f-9e95eae8b7ee
+  email: user@example.com
+  total_delegates: 2
+  payment_method: QRIS
+  voucher_code: PETROVIS2026
+  delegates[0][name]: John Doe
+  delegates[0][student_id]: 12345678
+  ... (other delegate fields)
+  delegates[1][name]: Jane Doe
+  delegates[1][student_id]: 87654321
+  ... (other delegate fields)
+
+  Result: Price = Rp 180,000 x 2 = Rp 360,000 (internal price)
+  ```
+}

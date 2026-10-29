@@ -1,0 +1,32 @@
+meta {
+  name: Create Product Size
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/api/v1/product/{{product_id}}/sizes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "L",
+    "price_adjustment": 5000,
+    "stock": 30
+  }
+}
+
+vars:pre-request {
+  product_id: d4e5f6a7-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

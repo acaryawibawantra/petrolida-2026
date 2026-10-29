@@ -1,0 +1,96 @@
+meta {
+  name: Get Team Me
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/api/v1/competition/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: Success
+
+  request: {
+    url: {{host}}/api/v1/competition/me
+    method: GET
+    mode: none
+  }
+
+  response: {
+    headers: {
+      access-control-allow-credentials: true
+      access-control-allow-headers: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+      access-control-allow-methods: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+      access-control-allow-origin: *
+      access-control-expose-headers: Content-Length
+      access-control-max-age: 86400
+      cache-control: no-cache
+      content-type: application/json; charset=utf-8
+      date: Sat, 07 Mar 2026 05:11:21 GMT
+      transfer-encoding: chunked
+    }
+
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success get my team",
+          "data": {
+            "id": "5418b177-b077-43e8-8624-f99d904cf1dc",
+            "team_name": "Team Alpha",
+            "university": "Institut Teknologi Bandung",
+            "status": "incomplete",
+            "stage": "registration",
+            "email": "johndoe@example.com",
+            "event_name": "Paper Competition Petrolida 2026",
+            "rejection_reason": "",
+            "registration_invoice": "",
+            "is_international": false,
+            "payment_proof": "",
+            "participants": [
+              {
+                "id": "d0340400-91cc-474c-8a65-1af2f0a5aef8",
+                "name": "John Doe",
+                "major": "Teknik Perminyakan",
+                "batch": "2021",
+                "email": "johndoe@example.com",
+                "phone_number": "081234567890",
+                "student_id_card": "{{host}}/api/v1/competition/assets/d0340400-91cc-474c-8a65-1af2f0a5aef8/student_id_card",
+                "twibbon_ig": "{{host}}/api/v1/competition/assets/d0340400-91cc-474c-8a65-1af2f0a5aef8/twibbon_ig",
+                "story_ig": "{{host}}/api/v1/competition/assets/d0340400-91cc-474c-8a65-1af2f0a5aef8/story_ig",
+                "follow_ig": "{{host}}/api/v1/competition/assets/d0340400-91cc-474c-8a65-1af2f0a5aef8/follow_ig",
+                "follow_linkedin": "{{host}}/api/v1/competition/assets/d0340400-91cc-474c-8a65-1af2f0a5aef8/follow_linkedin",
+                "follow_tiktok": "{{host}}/api/v1/competition/assets/d0340400-91cc-474c-8a65-1af2f0a5aef8/follow_tiktok",
+                "repost_competition_ig": "{{host}}/api/v1/competition/assets/d0340400-91cc-474c-8a65-1af2f0a5aef8/repost_competition_ig",
+                "type": "LEADER"
+              }
+            ],
+            "submission": {
+              "submission_1": "{{host}}/api/v1/competition/assets/submission/ae4843f0-086b-4cb7-a1fa-62769f3d9664/1",
+              "submission_2": "",
+              "submission_3": ""
+            }
+          }
+        }
+      '''
+    }
+  }
+}

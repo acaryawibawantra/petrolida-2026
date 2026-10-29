@@ -1,0 +1,114 @@
+meta {
+  name: Payment Proof
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{host}}/api/v1/competition/payment-proof
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  payment_proof: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: Fail | Not International
+  
+  request: {
+    url: {{host}}/api/v1/competition/payment-proof
+    method: POST
+    mode: multipartForm
+    body:multipart-form: {
+      payment_proof_url: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+    }
+  }
+  
+  response: {
+    headers: {
+      access-control-allow-credentials: true
+      access-control-allow-headers: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+      access-control-allow-methods: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+      access-control-allow-origin: *
+      access-control-expose-headers: Content-Length
+      access-control-max-age: 86400
+      cache-control: no-cache
+      content-type: application/json; charset=utf-8
+      date: Sat, 07 Mar 2026 05:45:01 GMT
+      content-length: 93
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": false,
+          "message": "failed upload payment proof",
+          "error": "team is not international"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Success
+  
+  request: {
+    url: {{host}}/api/v1/competition/payment-proof
+    method: POST
+    mode: multipartForm
+    body:multipart-form: {
+      payment_proof: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+    }
+  }
+  
+  response: {
+    headers: {
+      access-control-allow-credentials: true
+      access-control-allow-headers: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+      access-control-allow-methods: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+      access-control-allow-origin: *
+      access-control-expose-headers: Content-Length
+      access-control-max-age: 86400
+      cache-control: no-cache
+      content-type: application/json; charset=utf-8
+      date: Sat, 07 Mar 2026 06:00:59 GMT
+      content-length: 251
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success upload payment proof",
+          "data": {
+            "payment_proof_url": "https://is3.cloudhost.id/petrolida2026-dev/event/competition/7994e6d2-cc23-43f5-baed-3f6b81818c54/payment-proof/PAYMENT-PROOF-06def2e1-f8ca-4f66-b2f4-5ed8b6a0b189"
+          }
+        }
+      '''
+    }
+  }
+}

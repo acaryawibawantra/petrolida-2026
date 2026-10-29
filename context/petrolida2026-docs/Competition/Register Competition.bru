@@ -1,0 +1,214 @@
+meta {
+  name: Register Competition
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/api/v1/competition
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  team_name: Team Omega
+  university: Institut Teknologi Baduy
+  event_id: {{event_id}}
+  participants[0][name]: John Doe
+  participants[0][major]: Teknik Matematika
+  participants[0][batch]: 2021
+  participants[0][email]: larawoc851@pckage.com
+  participants[0][phone_number]: 081234567890
+  participants[0][student_id_card]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[0][twibbon_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[0][story_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[0][follow_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[0][follow_linkedin]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[0][follow_tiktok]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[0][repost_competition_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[1][name]: Sandiaga Uno
+  participants[1][major]: Teknik Kimia
+  participants[1][batch]: 2021
+  participants[1][email]: sandi@example.com
+  participants[1][phone_number]: 081234567891
+  participants[1][student_id_card]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[1][twibbon_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[1][story_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[1][follow_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[1][follow_linkedin]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[1][follow_tiktok]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  participants[1][repost_competition_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+  is_international: true
+}
+
+vars:pre-request {
+  event_id: 7994e6d2-cc23-43f5-baed-3f6b81818c54
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: Success
+
+  request: {
+    url: {{host}}/api/v1/competition
+    method: POST
+    mode: multipartForm
+    body:multipart-form: {
+      team_name: Team Alpha
+      university: Institut Teknologi Bandung
+      event_id: {{event_id}}
+      participants[0][name]: John Doe
+      participants[0][major]: Teknik Perminyakan
+      participants[0][batch]: 2021
+      participants[0][email]: johndoe@example.com
+      participants[0][phone_number]: 081234567890
+      participants[0][student_id_card]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][twibbon_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][story_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][follow_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][follow_linkedin]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][follow_tiktok]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][repost_competition_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][name]: Jane Smith
+      participants[1][major]: Teknik Perminyakan
+      participants[1][batch]: 2021
+      participants[1][email]: jane.smith@example.com
+      participants[1][phone_number]: 081234567891
+      participants[1][student_id_card]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][twibbon_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][story_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][follow_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][follow_linkedin]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][follow_tiktok]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][repost_competition_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+    }
+  }
+
+  response: {
+    headers: {
+      access-control-allow-credentials: true
+      access-control-allow-headers: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+      access-control-allow-methods: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+      access-control-allow-origin: *
+      access-control-expose-headers: Content-Length
+      access-control-max-age: 86400
+      cache-control: no-cache
+      content-type: application/json; charset=utf-8
+      date: Sat, 07 Mar 2026 05:03:06 GMT
+      content-length: 320
+    }
+
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success register competition",
+          "data": {
+            "id": "5418b177-b077-43e8-8624-f99d904cf1dc",
+            "team_name": "Team Alpha",
+            "university": "Institut Teknologi Bandung",
+            "event": "Paper Competition Petrolida 2026",
+            "email": "johndoe@example.com",
+            "status": "incomplete",
+            "stage": "registration",
+            "is_international": false
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Success | International
+
+  request: {
+    url: {{host}}/api/v1/competition
+    method: POST
+    mode: multipartForm
+    body:multipart-form: {
+      team_name: Team Omega
+      university: Institut Teknologi Baduy
+      event_id: {{event_id}}
+      participants[0][name]: John Doe
+      participants[0][major]: Teknik Matematika
+      participants[0][batch]: 2021
+      participants[0][email]: larawoc851@pckage.com
+      participants[0][phone_number]: 081234567890
+      participants[0][student_id_card]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][twibbon_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][story_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][follow_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][follow_linkedin]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][follow_tiktok]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[0][repost_competition_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][name]: Sandiaga Uno
+      participants[1][major]: Teknik Kimia
+      participants[1][batch]: 2021
+      participants[1][email]: sandi@example.com
+      participants[1][phone_number]: 081234567891
+      participants[1][student_id_card]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][twibbon_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][story_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][follow_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][follow_linkedin]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][follow_tiktok]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      participants[1][repost_competition_ig]: @file(C:\Users\Rani\Downloads\test api\meeeee.jpg)
+      is_international: true
+    }
+  }
+
+  response: {
+    headers: {
+      access-control-allow-credentials: true
+      access-control-allow-headers: Origin, Content-Type, api_key, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+      access-control-allow-methods: POST, GET, OPTIONS, PATCH, PUT, DELETE, UPDATE
+      access-control-allow-origin: *
+      access-control-expose-headers: Content-Length
+      access-control-max-age: 86400
+      cache-control: no-cache
+      content-type: application/json; charset=utf-8
+      date: Sat, 07 Mar 2026 05:53:46 GMT
+      content-length: 319
+    }
+
+    status: {
+      code: 200
+      text: OK
+    }
+
+    body: {
+      type: json
+      content: '''
+        {
+          "success": true,
+          "message": "success register competition",
+          "data": {
+            "id": "ad19a8b4-1271-423d-b831-fe4733392d1e",
+            "team_name": "Team Omega",
+            "university": "Institut Teknologi Baduy",
+            "event": "Paper Competition Petrolida 2026",
+            "email": "larawoc851@pckage.com",
+            "status": "incomplete",
+            "stage": "registration",
+            "is_international": true
+          }
+        }
+      '''
+    }
+  }
+}

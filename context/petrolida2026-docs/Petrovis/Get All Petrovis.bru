@@ -1,0 +1,87 @@
+meta {
+  name: Get All Petrovis
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/api/v1/petrovis?page=1&limit=10&search=john&sort=created_at&order=desc
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  ## Description
+  Admin endpoint for listing all Petrovis registrations with pagination, search, and sorting capabilities. Returns a paginated list of registrations.
+
+  ## Authentication
+  - Bearer token required
+  - Role: **Admin only**
+
+  ## Query Parameters
+  | Parameter | Type | Required | Default | Description |
+  |-----------|------|----------|---------|-------------|
+  | page | integer | No | 1 | Page number for pagination |
+  | limit | integer | No | 10 | Number of items per page |
+  | search | string | No | - | Search by leader name |
+  | sort | string | No | created_at | Field to sort by |
+  | order | string | No | desc | Sort direction (asc or desc) |
+
+  ## Response Structure
+  ```json
+  {
+    "success": true,
+    "message": "success to get list Petrovis",
+    "data": {
+      "data": [
+        {
+          "id": "c58a8a69-56a9-4c35-8a5f-9e95eae8b7ee",
+          "spe": "SPE UI SC",
+          "email": "adidin@gmail.com",
+          "leader": "Adidin bin ahmad",
+          "status": "paid"
+        }
+      ],
+      "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 5,
+        "per_page": 10,
+        "to": 10,
+        "total": 50
+      }
+    }
+  }
+  ```
+
+  ## Response Fields
+  | Field | Type | Description |
+  |-------|------|-------------|
+  | id | string(uuid) | Unique identifier of the Petrovis registration |
+  | spe | string | Name of the SPE organization |
+  | email | string | Registration contact email |
+  | leader | string | Name of the first delegate (leader) |
+  | status | string | Payment status (paid, pending, cancelled) |
+
+  ## Error Responses
+  | Status | Message |
+  |--------|---------|
+  | 401 | Unauthorized (missing or invalid token) |
+  | 403 | Forbidden (not an admin) |
+  | 500 | Failed to get list Petrovis |
+
+  ## Business Logic Notes
+  - Search functionality filters by leader (first delegate) name
+  - Default sorting is by created_at in descending order (newest first)
+  - Returns summary information only - use Get by ID for full details including all delegates
+  - Status values reflect Tripay transaction status
+}
